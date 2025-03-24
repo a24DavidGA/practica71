@@ -1,15 +1,20 @@
+# Use an official Node.js runtime as a parent image
 FROM node:14
 
-# Create app directory
+# Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY package.json yarn.lock ./
-RUN yarn install
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
-# Bundle app source
+# Install app dependencies using npm (instead of yarn)
+RUN npm install
+
+# Copy the rest of the application
 COPY . .
 
+# Expose the port the app runs on
 EXPOSE 8080
 
-CMD [ "node", "app.js" ]
+# Run the app
+CMD ["npm", "start"]
